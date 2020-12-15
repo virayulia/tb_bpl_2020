@@ -90,6 +90,14 @@ public class MenuUtama extends JFrame {
 		kelolaUser.add(lblIconKelolaUser);
 		
 		JPanel kelolaUser_1 = new JPanel();
+		kelolaUser_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				MasterBarang masterbarang = new MasterBarang();
+				masterbarang.setVisible(true);
+				dispose();
+			}
+		});
 		kelolaUser_1.setBorder(new LineBorder(new Color(244, 164, 96), 3, true));
 		kelolaUser_1.setBackground(new Color(255, 228, 181));
 		kelolaUser_1.setLayout(null);
