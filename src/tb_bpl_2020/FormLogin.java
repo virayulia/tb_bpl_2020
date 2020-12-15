@@ -18,19 +18,18 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.SystemColor;
 
 public class FormLogin extends JFrame {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	User datauser;
 	DBUser db = new DBUser();
 	static Date date = new Date();
+	
 	static String user;
 	static String pass;
+	String coba1, coba2, coba3;
+	static Integer ulang=2;
 	
 	MenuUtama menu_utama;
 	FormKelolaUser form_kelolauser;
@@ -84,7 +83,7 @@ public class FormLogin extends JFrame {
 			
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
-				if(txtUsername.getText().equals("") || txtPassword.getPassword().equals("")) {
+				if(txtUsername.getText().equals("") || txtPassword.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "Anda belum memasukkan Username dan Password", "Pesan", JOptionPane.WARNING_MESSAGE);
 					txtUsername.requestFocus();
 					hapuslayar();
@@ -92,7 +91,30 @@ public class FormLogin extends JFrame {
 				else {
 					String tanggal = String.format("%tF", date);
 					datauser = new User(txtUsername.getText(), tanggal, txtPassword.getText()); 
-						
+					
+					if(ulang==2) {
+						coba1 = txtUsername.getText();
+					}
+					
+					else if(ulang==1){
+						coba2 = txtUsername.getText();
+						if(!coba2.equals(coba1)) {
+							coba1=txtUsername.getText();
+							ulang=2;
+							coba2=null;
+						}
+					}
+					
+					else if(ulang==0) {
+						coba3 = txtUsername.getText();
+						if(!coba3.equals(coba2)) {
+							ulang=2;
+							coba1=txtUsername.getText();
+							coba2=null; coba3=null;
+						}
+					}
+					
+					
 					if(db.Login(datauser) == 1) {
 						
 						menu_utama = new MenuUtama();
@@ -103,12 +125,16 @@ public class FormLogin extends JFrame {
 						menu_utama.lblUser.setText(user);
 						form_kelolauser.lblUser.setText(user);
 						
-						new MenuUtama().setVisible(true);
 						dispose();
+						menu_utama.setVisible(true);
 					}
+					
 					else {
-						JOptionPane.showMessageDialog(btnLogin, "Password dan Username Salah");
-						hapuslayar();
+						ulang--;
+							
+						if(ulang<0) {
+							ulang=2;
+						}
 					}
 				}
 			}

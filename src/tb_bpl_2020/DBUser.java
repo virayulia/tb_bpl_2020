@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.util.LinkedHashMap;
+import java.util.Random;
 
 public class DBUser {
 	User datauser;
@@ -22,7 +23,7 @@ public class DBUser {
 	public Integer Login(User datauser) {
 		Integer login=0;
 		try {
-			Connection conn = (Connection)Koneksi.koneksi();
+			conn = (Connection)Koneksi.koneksi();
 			String sql = ("SELECT * FROM user WHERE username =? AND password =?");
 			statement = conn.prepareStatement(sql);
 			statement.setString(1, datauser.getUsername());
@@ -31,29 +32,82 @@ public class DBUser {
 	
 		if(rs.next()) {
 			try {
-				String update = "UPDATE user SET login_terakhir = '"+datauser.getDate()+"' WHERE username ='"+datauser.getUsername()+"'";
-				stmt = conn.createStatement();
-
+				String update = "UPDATE user SET login_terakhir = '"+datauser.getDate()+"' WHERE username = '"+datauser.getUsername()+"'";
+				stmt= conn.createStatement();
 				login = stmt.executeUpdate(update);
 			}
 			
 			catch(Exception e) {
 				JOptionPane.showMessageDialog(null, "Terjadi Kesalahan Pada "+e+"", "Peringatan", JOptionPane.WARNING_MESSAGE);
-			
 			}}
-		}
+		
+		else {
+			if(FormLogin.ulang>0) {
+				try {
+					String cek_akun = ("SELECT * FROM user WHERE username =?");
+					statement = conn.prepareStatement(cek_akun);
+					statement.setString(1, datauser.getUsername());
+					ResultSet rs_cekakun = statement.executeQuery();
+					
+					if(!rs_cekakun.next()) {
+						JOptionPane.showMessageDialog(null, "Akun Tidak Terdaftar", "Peringatan", JOptionPane.WARNING_MESSAGE);
+					}
+					
+					else {
+					JOptionPane.showMessageDialog(null, "Username dan Password Salah", "Peringatan", JOptionPane.WARNING_MESSAGE);
+					}
+				}
+				catch(SQLException e) {
+					JOptionPane.showMessageDialog(null, "Terjadi Kesalahan Pada "+e+"", "Peringatan", JOptionPane.WARNING_MESSAGE);
+				}
+				
+				
+			}
+			else if(FormLogin.ulang<=0) {
+				try {
+					String update = ("UPDATE user SET password =? WHERE username=?");
+					statement = conn.prepareStatement(update);
+					statement.setString(1, getRandom());
+					statement.setString(2, datauser.getUsername());
+					
+					if(statement.executeUpdate()>0) {
+						JOptionPane.showMessageDialog(null, "Password Anda Akan Di Reset", "Peringatan", JOptionPane.WARNING_MESSAGE);
+					}
+				}
+				catch(SQLException e) {
+					JOptionPane.showMessageDialog(null, "Terjadi Kesalahan Pada "+e+"", "Peringatan", JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		}}
 		catch(Exception e) {
-			JOptionPane.showMessageDialog(null, "Username dan Password Salah", "Peringatan", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Terjadi Kesalahan Pada "+e+"", "Peringatan", JOptionPane.WARNING_MESSAGE);
 			}
 		
 		return login;
 	}
 	
+	//random String
+    public String getRandom() {
+    	char[] chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".toCharArray();
+        StringBuilder stringBuilder = new StringBuilder();
+        Random random = new Random();
+        String output;
+        
+        for (int lenght = 0; lenght < 8; lenght++) {
+            Character character = chars[random.nextInt(chars.length)];
+            stringBuilder.append(character);
+        }
+        output = stringBuilder.toString();
+        stringBuilder.delete(0, 8);
+
+        return output;
+    }
+	
 	public Integer Registrasi(User datauser2) {
 		Integer registrasi = 0;
 		
 		//cek validasi email
-		if(isValidEmail(datauser2.getEmail().toString())) {
+		if(isValidEmail(datauser2.getEmail())) {
 			try {
 				Connection conn = (Connection)Koneksi.koneksi();
 				String check_akun = ("SELECT username FROM user WHERE username = ?");
@@ -90,7 +144,8 @@ public class DBUser {
 		return registrasi;	
 	}
 	
-	private static boolean isValidEmail(String email) {
+	//method cek validasi email
+	private boolean isValidEmail(String email) {
 		boolean valid = false;
 		String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 		String emailPattern2 = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+\\.+[a-z]+";
