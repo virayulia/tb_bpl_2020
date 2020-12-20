@@ -1,7 +1,7 @@
 package tb_bpl_2020;
 
 public class Barang {
-	private String sku;
+	public String sku;
 	private String nama;
 	private Integer stock;
 	private Integer hargabeli;
@@ -13,6 +13,10 @@ public class Barang {
 		setStock(stock);
 		setHargabeli(hargabeli);
 		setHargajual(hargajual);
+	}
+	
+	public Barang(String sku) {
+		setSku(sku);
 	}
 	
 	public void setSku(String sku) {

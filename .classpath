@@ -8,11 +8,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/Eclipse/Tugas/TB/mysql-connector-java-8.0.22.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Hp/Downloads/mysql-connector-java-8.0.22.jar"/>
+	<classpathentry kind="lib" path="mysql-connector-java-8.0.22.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
