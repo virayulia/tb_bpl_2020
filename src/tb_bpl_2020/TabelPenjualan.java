@@ -47,9 +47,10 @@ public class TabelPenjualan extends JFrame {
 		setBounds(100, 100, 665, 438);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(255, 248, 220));
-		
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setUndecorated(true);
+	
 		
 		JLabel lblNewLabel = new JLabel("Pengolahan Data Penjualan");
 		lblNewLabel.setFont(new Font("Times New Roman", Font.PLAIN, 20));

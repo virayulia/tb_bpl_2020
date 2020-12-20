@@ -48,12 +48,66 @@ public class FormRegistrasi extends JFrame {
 		setContentPane(FormRegistrasi);
 		FormRegistrasi.setLayout(null);
 		
+		JLabel lblWarning = new JLabel("");
+		lblWarning.setForeground(new Color(255, 0, 0));
+		lblWarning.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		lblWarning.setBounds(58, 229, 283, 14);
+		FormRegistrasi.add(lblWarning);
+		
+		JButton btnDaftar = new JButton("Daftar");
+		btnDaftar.setBackground(new Color(255, 228, 181));
+		btnDaftar.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
+			public void actionPerformed(ActionEvent e) {
+			try	{
+				if(txtUsername.getText().equals("")|| txtEmail.getText().equals("")||txtPass.getPassword().equals("")||txtCPass.getPassword().equals("")) {
+					JOptionPane.showMessageDialog(null, "Data Tidak Boleh Kosong", "Peringatan", JOptionPane.WARNING_MESSAGE);
+					hapuslayar();
+				}
+				
+				else {
+					String tanggal = String.format("%tF", date);
+					datauser2 = new User(txtUsername.getText(), tanggal, txtEmail.getText(), txtPass.getText()); 
+					hapuslayar();
+				}
+				
+				if(db.Registrasi(datauser2)>0) {
+					
+					dispose();
+					new FormLogin().setVisible(true);
+				}
+						
+			}
+			catch(Exception er) {
+				JOptionPane.showMessageDialog(btnDaftar, "Terjadi Kesalahan", "Error", JOptionPane.ERROR_MESSAGE );
+			}
+		}
+		});
+		btnDaftar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		btnDaftar.setBounds(58, 250, 283, 23);
+		FormRegistrasi.add(btnDaftar);
+		
 		JLabel lblUsername = new JLabel("Username");
 		lblUsername.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		lblUsername.setBounds(58, 142, 104, 14);
 		FormRegistrasi.add(lblUsername);
 		
 		txtUsername = new JTextField();
+		txtUsername.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				String username = new String(txtUsername.getText());
+				
+				if(username.length()>20) {
+					lblWarning.setText("Username Maksimal 20 Karakter");
+					btnDaftar.setEnabled(false);
+				}
+				else {
+					lblWarning.setText("");
+					btnDaftar.setEnabled(true);
+				}
+			}
+		});
 		txtUsername.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		txtUsername.setBounds(199, 140, 142, 20);
 		FormRegistrasi.add(txtUsername);
@@ -81,44 +135,24 @@ public class FormRegistrasi extends JFrame {
 		FormRegistrasi.add(lblCPass);
 		
 		txtPass = new JPasswordField();
+		txtPass.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				String password = new String(txtPass.getPassword());
+				
+				if(password.length()>20) {
+					lblWarning.setText("Password Maksimal Berjumlah 20 Karakter");
+					btnDaftar.setEnabled(false);
+				}
+				else {
+					lblWarning.setText("");
+					btnDaftar.setEnabled(true);
+				}
+			}
+		});
 		txtPass.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		txtPass.setBounds(199, 171, 142, 20);
 		FormRegistrasi.add(txtPass);
-		
-		JLabel lblWarning = new JLabel("");
-		lblWarning.setForeground(new Color(255, 0, 0));
-		lblWarning.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		lblWarning.setBounds(58, 229, 283, 14);
-		FormRegistrasi.add(lblWarning);
-		
-		JButton btnDaftar = new JButton("Daftar");
-		btnDaftar.setBackground(new Color(255, 228, 181));
-		btnDaftar.addActionListener(new ActionListener() {
-			@SuppressWarnings("deprecation")
-			public void actionPerformed(ActionEvent e) {
-				if(txtUsername.getText().equals("")|| txtEmail.getText().equals("")||txtPass.getPassword().equals("")||txtCPass.getPassword().equals("")) {
-					JOptionPane.showMessageDialog(null, "Data Tidak Boleh Kosong", "Peringatan", JOptionPane.WARNING_MESSAGE);
-					hapuslayar();
-				}
-				
-				else {
-					String tanggal = String.format("%tF", date);
-					datauser2 = new User(txtUsername.getText(), tanggal, txtEmail.getText(), txtPass.getText()); 
-					hapuslayar();
-				}
-				
-				if(db.Registrasi(datauser2)==1) {
-					
-					dispose();
-					new FormLogin().setVisible(true);
-				}
-						
-			}
-		});
-		btnDaftar.setFont(new Font("Times New Roman", Font.PLAIN, 12));
-		btnDaftar.setBounds(58, 250, 283, 23);
-		FormRegistrasi.add(btnDaftar);
-		
 		
 		txtCPass = new JPasswordField();
 		txtCPass.addKeyListener(new KeyAdapter() {

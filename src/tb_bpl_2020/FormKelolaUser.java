@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+
 import java.awt.event.ActionEvent;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -28,10 +29,12 @@ public class FormKelolaUser extends JFrame {
 	private JPanel contentPane;
 	private JTextField txtCari;
 	public JLabel lblUser;
+
 	DBUser db = new DBUser();
 	private JTable table;
-
+	
 	public FormKelolaUser() {
+		
 		setForeground(new Color(205, 92, 92));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 500);
@@ -68,7 +71,7 @@ public class FormKelolaUser extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int hapus = JOptionPane.showConfirmDialog(btnHapusAkun, "Apakah Anda Yakin Akan Menghapus Akun?", "Konfirmasi", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if(hapus == JOptionPane.YES_OPTION) {
-					if(db.HapusAkun() == 1) {
+					if(db.HapusAkun()>0) {
 						JOptionPane.showMessageDialog(btnHapusAkun, "Akun Berhasil di Hapus");
 						dispose();
 						new FormLogin().setVisible(true);
@@ -111,6 +114,7 @@ public class FormKelolaUser extends JFrame {
 					tb.addColumn("Username");
 					tb.addColumn("Login Terakhir");
 					tb.addColumn("Email");
+					tb.addColumn("Password");
 					table.setModel(tb);
 					
 					for(Map.Entry list : Cari.entrySet()){
@@ -120,6 +124,7 @@ public class FormKelolaUser extends JFrame {
 			             list.getKey(),
 			             list2.getDate(),
 			             list2.getEmail(),
+			             list2.getPassword(),
 			           });
 					}
 					
@@ -139,16 +144,16 @@ public class FormKelolaUser extends JFrame {
 		JButton btnLihatData = new JButton("Lihat Data User");
 		btnLihatData.setBackground(new Color(255, 255, 224));
 		btnLihatData.addActionListener(new ActionListener() {
-			@SuppressWarnings("rawtypes")
 			public void actionPerformed(ActionEvent e) {
+				
 				LinkedHashMap<String, User> listUser = db.lihatUser();
-				
+	
 				DefaultTableModel tb = new DefaultTableModel();
-				
 				//Judul Kolom
 				tb.addColumn("Username");
 				tb.addColumn("Login Terakhir");
 				tb.addColumn("Email");
+				tb.addColumn("Password");
 				table.setModel(tb);
 				
 				for(Map.Entry list : listUser.entrySet()){
@@ -158,9 +163,9 @@ public class FormKelolaUser extends JFrame {
 		             list.getKey(),
 		             list2.getDate(),
 		             list2.getEmail(),
+		             list2.getPassword(),
 		           });
 				}
-				
 			}
 		});
 		btnLihatData.setFont(new Font("Times New Roman", Font.PLAIN, 12));
@@ -176,6 +181,8 @@ public class FormKelolaUser extends JFrame {
 		
 		table = new JTable();
 		scrollPane.setViewportView(table);
+		table.setRowHeight(25);
+		table.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		
 		JLabel lblKelolaUser = new JLabel("Kelola User");
 		lblKelolaUser.setHorizontalAlignment(SwingConstants.CENTER);
@@ -194,13 +201,13 @@ public class FormKelolaUser extends JFrame {
 		btnBack.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new MenuUtama().setVisible(true);
 				dispose();
+				new MenuUtama().setVisible(true);
 			}
 		});
 		btnBack.setIcon(new ImageIcon("E:\\Semester III\\BPL\\tb_bpl_2020\\res\\reply.png"));
 		btnBack.setBounds(10, 463, 101, 24);
-		contentPane.add(btnBack);
-		
+		contentPane.add(btnBack);	
 	}
+	
 }

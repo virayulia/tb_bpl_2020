@@ -23,8 +23,8 @@ public class DBUser {
 	public Integer Login(User datauser) {
 		Integer login=0;
 		try {
-			conn = (Connection)Koneksi.koneksi();
-			String sql = ("SELECT * FROM user WHERE username =? AND password =?");
+			conn = Koneksi.koneksi();
+			String sql = ("SELECT * FROM user WHERE username=? AND password=MD5(?)");
 			statement = conn.prepareStatement(sql);
 			statement.setString(1, datauser.getUsername());
 			statement.setString(2, datauser.getPassword());
@@ -36,7 +36,6 @@ public class DBUser {
 				stmt= conn.createStatement();
 				login = stmt.executeUpdate(update);
 			}
-			
 			catch(Exception e) {
 				JOptionPane.showMessageDialog(null, "Terjadi Kesalahan Pada "+e+"", "Peringatan", JOptionPane.WARNING_MESSAGE);
 			}}
@@ -44,7 +43,7 @@ public class DBUser {
 		else {
 			if(FormLogin.ulang>0) {
 				try {
-					String cek_akun = ("SELECT * FROM user WHERE username =?");
+					String cek_akun = ("SELECT * FROM user WHERE username=?");
 					statement = conn.prepareStatement(cek_akun);
 					statement.setString(1, datauser.getUsername());
 					ResultSet rs_cekakun = statement.executeQuery();
@@ -54,7 +53,10 @@ public class DBUser {
 					}
 					
 					else {
-					JOptionPane.showMessageDialog(null, "Username dan Password Salah", "Peringatan", JOptionPane.WARNING_MESSAGE);
+						FormLogin formLogin = new FormLogin();
+						formLogin.hapuslayar();
+						JOptionPane.showMessageDialog(null, "Username dan Password Salah", "Peringatan", JOptionPane.WARNING_MESSAGE);
+				
 					}
 				}
 				catch(SQLException e) {
@@ -65,7 +67,7 @@ public class DBUser {
 			}
 			else if(FormLogin.ulang<=0) {
 				try {
-					String update = ("UPDATE user SET password =? WHERE username=?");
+					String update = ("UPDATE user SET password=MD5(?) WHERE username=?");
 					statement = conn.prepareStatement(update);
 					statement.setString(1, getRandom());
 					statement.setString(2, datauser.getUsername());
@@ -78,10 +80,11 @@ public class DBUser {
 					JOptionPane.showMessageDialog(null, "Terjadi Kesalahan Pada "+e+"", "Peringatan", JOptionPane.WARNING_MESSAGE);
 				}
 			}
-		}}
+		}
+		}
 		catch(Exception e) {
 			JOptionPane.showMessageDialog(null, "Terjadi Kesalahan Pada "+e+"", "Peringatan", JOptionPane.WARNING_MESSAGE);
-			}
+		}
 		
 		return login;
 	}
@@ -109,7 +112,7 @@ public class DBUser {
 		//cek validasi email
 		if(isValidEmail(datauser2.getEmail())) {
 			try {
-				Connection conn = (Connection)Koneksi.koneksi();
+				conn = Koneksi.koneksi();
 				String check_akun = ("SELECT username FROM user WHERE username = ?");
 				statement = conn.prepareStatement(check_akun);
 				statement.setString(1, datauser2.getUsername());
@@ -121,7 +124,7 @@ public class DBUser {
 				
 			else {
 				try {
-					String tambah = ("INSERT INTO user VALUES (?,?,?,?)");
+					String tambah = ("INSERT INTO user VALUES (?,?,?,MD5(?))");
 					statement = conn.prepareStatement(tambah);
 					statement.setString(1, datauser2.getUsername());
 					statement.setString(2, datauser2.getDate());
@@ -167,13 +170,13 @@ public class DBUser {
 		Integer hapus_akun = 0;
 		
 		try {
-			Connection conn = (Connection)Koneksi.koneksi();
+			conn = Koneksi.koneksi();
 			
 			String sql = ("DELETE FROM user WHERE username=?");
 			statement = conn.prepareStatement(sql);
 			statement.setString(1, FormLogin.user);
 			hapus_akun = statement.executeUpdate();
-			
+		
 		} catch (SQLException | ClassNotFoundException e) {
 			System.out.println("Terjadi kesalahan");
 		}
@@ -186,8 +189,8 @@ public class DBUser {
 		
 		if(passLama.equals(FormLogin.pass)) {
 			try {
-			Connection conn = (Connection)Koneksi.koneksi();
-			String sql = ("UPDATE user SET password=? WHERE username=?");	
+			conn = Koneksi.koneksi();
+			String sql = ("UPDATE user SET password=MD5(?) WHERE username=?");	
 			statement = conn.prepareStatement(sql);
 			statement.setString(1, passBaru);
 			statement.setString(2, FormLogin.user);
@@ -214,7 +217,7 @@ public class DBUser {
 		LinkedHashMap<String, User> listUser = new LinkedHashMap<>();
 	
 		try {
-			Connection conn = (Connection)Koneksi.koneksi();
+			conn = Koneksi.koneksi();
 			String sql = ("SELECT * FROM user");
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
@@ -224,7 +227,6 @@ public class DBUser {
 				
 			listUser.put(rs.getString("username"), datauser);	
 			}
-			
 		} catch (SQLException | ClassNotFoundException e) {
 			JOptionPane.showMessageDialog(null, "Terjadi Kesalahan Pada "+e+"");
 		}
@@ -237,7 +239,7 @@ public class DBUser {
 		LinkedHashMap<String, User> Cari = new LinkedHashMap<>();
 		
 		try {
-			Connection conn = (Connection)Koneksi.koneksi();
+			conn = Koneksi.koneksi();
 			String query = "SELECT * FROM user WHERE username LIKE ?";
 			statement = conn.prepareStatement(query);
 			statement.setString(1, "%" +cari+ "%");

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 14, 2020 at 10:12 AM
+-- Generation Time: Dec 20, 2020 at 03:23 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.4.13
 
@@ -34,6 +34,13 @@ CREATE TABLE `barang` (
   `harga_beli` int(11) NOT NULL,
   `harga_jual` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `barang`
+--
+
+INSERT INTO `barang` (`sku`, `nama`, `stock`, `harga_beli`, `harga_jual`) VALUES
+('123', 'Merry White', 12, 5000, 7000);
 
 -- --------------------------------------------------------
 
@@ -71,7 +78,7 @@ CREATE TABLE `user` (
   `username` varchar(20) NOT NULL,
   `login_terakhir` date NOT NULL,
   `email` varchar(50) NOT NULL,
-  `password` varchar(20) NOT NULL
+  `password` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -79,8 +86,10 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`username`, `login_terakhir`, `email`, `password`) VALUES
-('latifa', '2020-12-14', 'latifatuzikra@gmail.com', '12345'),
-('naura', '2020-12-14', 'arkegonium3@gmail.com', 'delima');
+('Killa', '2020-12-20', 'arkegonium1@gmail.com', '202cb962ac59075b964b07152d234b70'),
+('latifa', '2020-12-20', 'latifatuzikra@gmail.com', 'd33ab655704896a9ddd29853aaa83587'),
+('latifatiffany', '2020-12-20', 'arkegonium9@gmail.com', '83055367b1f85c3b450505f256fa87a1'),
+('nadim', '2020-12-20', 'latifatuzikra@gmail.com', '202cb962ac59075b964b07152d234b70');
 
 --
 -- Indexes for dumped tables

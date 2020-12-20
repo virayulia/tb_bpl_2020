@@ -18,8 +18,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
-import java.awt.SystemColor;
-import javax.swing.UIManager;
 
 
 public class MenuUtama extends JFrame {

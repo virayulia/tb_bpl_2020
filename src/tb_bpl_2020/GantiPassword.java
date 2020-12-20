@@ -64,7 +64,7 @@ public class GantiPassword extends JFrame {
 		btnGanti.addActionListener(new ActionListener() {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
-			if(db.GantiPassword(txtPassLama.getText(), txtPassBaru.getText()) == 1) {
+			if(db.GantiPassword(txtPassLama.getText(), txtPassBaru.getText())>0) {
 				JOptionPane.showMessageDialog(btnGanti, "Berhasil Mengganti Password");
 				dispose();
 			}

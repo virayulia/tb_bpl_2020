@@ -83,7 +83,8 @@ public class FormLogin extends JFrame {
 			
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
-				if(txtUsername.getText().equals("") || txtPassword.getText().equals("")) {
+			try {	
+				if(txtUsername.getText().equals("") || txtPassword.getPassword().equals("")) {
 					JOptionPane.showMessageDialog(null, "Anda belum memasukkan Username dan Password", "Pesan", JOptionPane.WARNING_MESSAGE);
 					txtUsername.requestFocus();
 					hapuslayar();
@@ -115,7 +116,7 @@ public class FormLogin extends JFrame {
 					}
 					
 					
-					if(db.Login(datauser) == 1) {
+					if(db.Login(datauser)>0) {
 						
 						menu_utama = new MenuUtama();
 						form_kelolauser= new FormKelolaUser();
@@ -138,6 +139,10 @@ public class FormLogin extends JFrame {
 					}
 				}
 			}
+			catch(Exception err) {
+				JOptionPane.showMessageDialog(btnLogin, "Terjadi Kesalahan", "Error", JOptionPane.ERROR_MESSAGE );
+			}
+		}
 		});
 		btnLogin.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		btnLogin.setBounds(64, 201, 283, 23);
@@ -167,7 +172,7 @@ public class FormLogin extends JFrame {
 		FormLogin.add(lblWarning);
 	}
 	
-	private void hapuslayar() {
+	public void hapuslayar() {
 		txtUsername.setText("");
 		txtPassword.setText("");
 	}

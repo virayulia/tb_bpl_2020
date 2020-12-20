@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 
 public class Koneksi {
 	private static Connection MySQLConnection;
+	static Connection conn;
 	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
     static final String DB_URL = "jdbc:mysql://localhost/minimarket?serverTimezone=Asia/Jakarta";
     static final String USER = "root";
