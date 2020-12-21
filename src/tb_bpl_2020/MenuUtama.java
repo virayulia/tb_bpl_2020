@@ -145,6 +145,20 @@ public class MenuUtama extends JFrame {
 		kelolaUser_1_1.add(lblIconKelolaUser_1_1);
 		
 		JPanel kelolaUser_1_2 = new JPanel();
+		kelolaUser_1_2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				FLapKeuangan lapKeuangan;
+				try {
+					dispose();
+					lapKeuangan = new FLapKeuangan();
+					lapKeuangan.setVisible(true);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		kelolaUser_1_2.setBorder(new LineBorder(new Color(244, 164, 96), 3, true));
 		kelolaUser_1_2.setBackground(new Color(255, 228, 181));
 		kelolaUser_1_2.setLayout(null);

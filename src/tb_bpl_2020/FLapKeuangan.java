@@ -1,8 +1,5 @@
 package tb_bpl_2020;
 
-
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
@@ -26,8 +23,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.awt.event.ActionEvent;
 import net.proteanit.sql.DbUtils;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+
 
 @SuppressWarnings("serial")
 public class FLapKeuangan extends JFrame {
@@ -42,17 +38,16 @@ public class FLapKeuangan extends JFrame {
 	static PreparedStatement statement;
 	private JTable tableLaporan;
 	private JTextField txtKeuntungan;
-
 	
 	
 	public void ComboBoxBulan() {
-		try { 
-			String query ="SELECT MONTHNAME(tanggal) AS Bulan FROM transaksi GROUP BY Bulan";
+		try {
+			String query ="SELECT MONTHNAME(tanggal) as bulan FROM transaksi GROUP BY bulan";
 			statement = conn.prepareStatement(query);
 			ResultSet rs = statement.executeQuery();
 			
 			while(rs.next()) {
-				cbBulan.addItem(rs.getString("Bulan"));
+				cbBulan.addItem(rs.getString("bulan"));
 			}
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
@@ -73,13 +68,17 @@ public class FLapKeuangan extends JFrame {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 	}
+
 	
 	public void getSumTotalPenjualan() {
 		int sum = 0;
+		int sum2 = 0;
 		for (int i=0; i<tableLaporan.getRowCount(); i++) {
 			sum = sum + Integer.parseInt(tableLaporan.getValueAt(i, 6).toString());
+			sum2 = sum2 + Integer.parseInt(tableLaporan.getValueAt(i, 7).toString());
 		}
 		txtTotalMasuk.setText(Integer.toString(sum));
+		txtKeuntungan.setText(Integer.toString(sum2));
 	}
 	
 	public FLapKeuangan() throws Exception, SQLException {
@@ -120,11 +119,12 @@ public class FLapKeuangan extends JFrame {
 				try {
 					String query ="SELECT transaksi.tanggal, "
 								+ "transaksi_detail.sku, "
-								+ "barang.nama AS nama_barang, "
+								+ "barang.nama as nama_barang, "
 								+ "COUNT(transaksi_detail.sku) AS banyak_transaksi, "
 								+ "SUM(transaksi_detail.jumlah) AS jumlah_terjual, "
 								+ "barang.stock-transaksi_detail.jumlah AS sisa_stok, "
-								+ "SUM(transaksi_detail.harga) AS total_penjualan "
+								+ "SUM(transaksi_detail.harga) AS total_penjualan, "
+								+ "transaksi_detail.harga-barang.harga_beli*transaksi_detail.jumlah AS untung "
 								+ "FROM transaksi_detail "
 								+ "INNER JOIN barang ON transaksi_detail.sku=barang.sku "
 								+ "INNER JOIN transaksi ON transaksi_detail.noresi=transaksi.noresi "
@@ -159,7 +159,8 @@ public class FLapKeuangan extends JFrame {
 								+ "COUNT(transaksi_detail.sku) AS banyak_transaksi, "
 								+ "SUM(transaksi_detail.jumlah) AS jumlah_terjual, "
 								+ "barang.stock-transaksi_detail.jumlah AS sisa_stok, "
-								+ "SUM(transaksi_detail.harga) AS total_penjualan "
+								+ "SUM(transaksi_detail.harga) AS total_penjualan, "
+								+ "transaksi_detail.harga-barang.harga_beli*transaksi_detail.jumlah AS untung "
 								+ "FROM transaksi_detail "
 								+ "INNER JOIN barang ON transaksi_detail.sku=barang.sku "
 								+ "INNER JOIN transaksi ON transaksi_detail.noresi=transaksi.noresi "
@@ -219,7 +220,7 @@ public class FLapKeuangan extends JFrame {
 					
 				} catch (SQLException e1) {
 					JOptionPane.showMessageDialog(null, e1.getMessage());
-				}
+				} 
 				
 			}
 		});
@@ -239,6 +240,16 @@ public class FLapKeuangan extends JFrame {
 		lblNewLabel_4.setBounds(552, 351, 106, 25);
 		panel.add(lblNewLabel_4);
 		
+		txtKeuntungan = new JTextField();
+		txtKeuntungan.setEditable(false);
+		txtKeuntungan.setColumns(10);
+		txtKeuntungan.setBounds(413, 352, 129, 23);
+		panel.add(txtKeuntungan);
+		
+		JLabel lblTotalKeuntunganrp = new JLabel("Total Keuntungan (Rp)");
+		lblTotalKeuntunganrp.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		lblTotalKeuntunganrp.setBounds(277, 351, 126, 25);
+		panel.add(lblTotalKeuntunganrp);
 		
 		
 		JButton btnNewButton_1 = new JButton("Kembali");
@@ -248,7 +259,6 @@ public class FLapKeuangan extends JFrame {
 		contentPane.add(btnNewButton_1);
 		setUndecorated(true);
 		
-		refreshTable();
 		ComboBoxBulan();
 		ComboBoxHari();
 	}
