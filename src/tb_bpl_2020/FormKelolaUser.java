@@ -117,7 +117,7 @@ public class FormKelolaUser extends JFrame {
 					tb.addColumn("Password");
 					table.setModel(tb);
 					
-					for(Map.Entry list : Cari.entrySet()){
+					for(Map.Entry<String, User> list : Cari.entrySet()){
 			            User list2 = (User) list.getValue();
 			            
 			           tb.addRow(new Object[] {
@@ -156,7 +156,7 @@ public class FormKelolaUser extends JFrame {
 				tb.addColumn("Password");
 				table.setModel(tb);
 				
-				for(Map.Entry list : listUser.entrySet()){
+				for(Map.Entry<String, User> list : listUser.entrySet()){
 		            User list2 = (User) list.getValue();
 		            
 		           tb.addRow(new Object[] {

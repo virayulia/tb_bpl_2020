@@ -166,6 +166,31 @@ public class MasterBarang extends JFrame {
 		btnCari.setBounds(312, 402, 89, 28);
 		contentPane.add(btnCari);
 		
+		
+		//Restock
+		JButton btnRestock = new JButton("Restock");
+		btnRestock.setBackground(new Color(255, 222, 173));
+		btnRestock.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					int rowIndex = table.getSelectedRow();
+					String sku = (String) tabelbarang.getValueAt(rowIndex, 0);
+					Integer stock = (Integer) tabelbarang.getValueAt(rowIndex, 2);
+					String restock = JOptionPane.showInputDialog("Tambah Jumlah Barang");
+				
+					Barang b = new Barang(Integer.parseInt(restock));
+					db.restock(sku, stock, b.getStock());
+					refreshData();
+					
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(null, "Anda belum memilih barang yang direstock!");
+				}
+				
+			}
+		});
+		btnRestock.setBounds(511, 402, 89, 28);
+		contentPane.add(btnRestock);
+				
 		//Kembali
 		JButton btnKembali = new JButton("Kembali");
 		btnKembali.setBackground(new Color(255, 222, 173));
@@ -175,7 +200,7 @@ public class MasterBarang extends JFrame {
 				new MenuUtama().setVisible(true);
 			}
 		});
-		btnKembali.setBounds(511, 402, 89, 28);
+		btnKembali.setBounds(611, 402, 89, 28);
 		contentPane.add(btnKembali);
 	}
 }

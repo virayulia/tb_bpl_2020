@@ -15,6 +15,10 @@ public class Barang {
 		setHargajual(hargajual);
 	}
 	
+	public Barang(Integer stock) {
+		setStock(stock);
+	}
+	
 	public Barang(String sku) {
 		setSku(sku);
 	}

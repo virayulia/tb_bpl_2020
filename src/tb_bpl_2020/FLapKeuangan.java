@@ -253,6 +253,12 @@ public class FLapKeuangan extends JFrame {
 		
 		
 		JButton btnNewButton_1 = new JButton("Kembali");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new MenuUtama().setVisible(true);
+				dispose();
+			}
+		});
 		btnNewButton_1.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		btnNewButton_1.setIcon(new ImageIcon("E:\\Semester III\\BPL\\tb_bpl_2020\\res\\reply.png"));
 		btnNewButton_1.setBounds(10, 433, 116, 30);

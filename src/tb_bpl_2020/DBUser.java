@@ -14,7 +14,6 @@ import java.util.Random;
 public class DBUser {
 	User datauser;
 	User datauser2;
-	FormRegistrasi form_registrasi;
 
 	static Connection conn;
 	static Statement stmt;

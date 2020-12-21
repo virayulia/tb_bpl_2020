@@ -187,6 +187,36 @@ public class DbBarang {
 	}
 	
 	
+	public void restock(String sku, Integer oldstock, Integer newstock) {
+		try {
+			conn = Koneksi.koneksi();
+			
+			Integer stock = oldstock + newstock;
+			
+			String sql = "UPDATE barang SET stock = ? WHERE sku=?";
+			pstm = conn.prepareStatement(sql);
+			pstm.setInt(1, stock);
+			pstm.setString(2, sku);
+			
+			if(pstm.executeUpdate() > 0) {
+				JOptionPane.showMessageDialog(null, "Stock berhasil ditambahkan!");
+			}
+			
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+		finally {
+			try {
+				pstm.close();
+			} catch (Exception e) {}
+			try {
+				conn.close();
+			} catch (Exception e) {}
+		}
+		
+	}
+
+	
 }
 
 	
